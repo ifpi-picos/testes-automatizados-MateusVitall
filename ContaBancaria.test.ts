@@ -2,9 +2,11 @@ import { beforeEach, describe, expect, test } from "bun:test";
 import ContaBancaria from "./ContaBancaria.ts";
 
 describe("Teste de classe ContaBancaria", () => {
-    let conta: ContaBancaria = new ContaBancaria
+    let conta: ContaBancaria
+    let contaDois: ContaBancaria
     beforeEach(() => {
         conta = new ContaBancaria()
+        contaDois = new ContaBancaria
     })
 
     test("Método Depositar", () => {
@@ -25,6 +27,19 @@ describe("Teste de classe ContaBancaria", () => {
         conta.depositar(50)
         expect(() => conta.sacar(60)).toThrow("Valor inválido")
     })
+
+    test("Método tranferir", () => {
+        conta.depositar(500)
+        expect(conta.transferir(200, contaDois)).toBe(300)
+    })
+
+    test("Método tranferir - Valor Inválido", () => {
+       expect(() => conta.transferir(200,contaDois))
+       .toThrow("valor inválido ou saldo insuficiente")
+    })
+    
 })
+
+
 
 
