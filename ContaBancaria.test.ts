@@ -34,12 +34,18 @@ describe("Teste de classe ContaBancaria", () => {
     })
 
     test("Método tranferir - Valor Inválido", () => {
-       expect(() => conta.transferir(200,contaDois))
-       .toThrow("valor inválido ou saldo insuficiente")
+        expect(() => conta.transferir(200, contaDois))
+            .toThrow("valor inválido ou saldo insuficiente")
     })
-    
+
+    test("Método Saldo", () => {
+        conta.depositar(10)
+        expect(conta.consultarSaldo()).toBe(10)
+    })
+
+    test("Método exibir extrato", () => {
+        conta.depositar(110)
+        conta.sacar(53)
+        expect(conta.exibirExtrato()).toBe("1. Depósito de R$ 110.00\n2. Saque de R$ 53.00")
+        })
 })
-
-
-
-
