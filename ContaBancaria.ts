@@ -6,6 +6,8 @@ export default class ContaBancaria {
 
 
     public constructor() {
+        this.numeroConta = Math.floor(Math.random()
+        * 900000000) + 100000000
         this.numeroConta = 0
         this.agencia = 0
         this.saldo = 0
@@ -16,7 +18,8 @@ export default class ContaBancaria {
     public depositar(valor: number) {
         if (valor > 0) {
             this.saldo += valor
-            this.extrato.push(`Depósito de R$ ${valor.toFixed(2)}`)
+            let descricao =`Depósito de R$ ${valor.toFixed(2)}`
+            this.registrarOperacao(descricao)
             return this.saldo
         } else {
             throw new Error("Valor inválido")
@@ -27,7 +30,8 @@ export default class ContaBancaria {
     public sacar(valor: number) {
         if (valor > 0 && valor <= this.saldo) {
             this.saldo -= valor
-            this.extrato.push(`Saque de R$ ${valor.toFixed(2)}`)
+            let descricao =`Saque de R$ ${valor.toFixed(2)}`
+            this.registrarOperacao(descricao)
             return this.saldo
         } else {
             throw new Error("Valor inválido")
@@ -39,14 +43,16 @@ export default class ContaBancaria {
 
     private receberTransferencia(valor: number, conta: ContaBancaria) {
         conta.saldo += valor
-        conta.extrato.push(`Transferência de ${valor} recebida`)
+        let descricao=`Transferência de ${valor} recebida`
+        conta.registrarOperacao(descricao)
     }
 
     public transferir(valor: number, conta: ContaBancaria) {
         if (valor > 0 && valor <= this.saldo) {
             conta.receberTransferencia(valor, conta)
             this.saldo -= valor
-            this.extrato.push(`Transferêcia de r$ ${valor} realizada.`)
+            let descricao = `Transferêcia de r$ ${valor} realizada.`
+            this.registrarOperacao(descricao)
             return this.saldo
         } else {
             throw new Error("valor inválido ou saldo insuficiente")
@@ -64,5 +70,14 @@ export default class ContaBancaria {
             extratoString += `${index + 1}. ${operacao}\n`
        })
        return extratoString.trim()
+    }
+
+    private registrarOperacao(descricao: string){
+        let data: Date | string = new Date()
+    data = `${data.getDate()}/${(data.getMonth() + 1)}/${data.getFullYear()}`
+
+        descricao = `${descricao} - ${data}`
+        this.extrato.push(descricao)
+      
     }
 }
